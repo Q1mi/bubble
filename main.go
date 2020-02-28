@@ -4,7 +4,7 @@ import (
 	"bubble/config"
 	"bubble/dblayer"
 	"bubble/models"
-	"bubble/routes"
+	"bubble/routers"
 	"fmt"
 
 	"gopkg.in/ini.v1"
@@ -27,7 +27,7 @@ func main() {
 	// run the migrations: todo struct
 	dblayer.DB = dblayer.DB.AutoMigrate(&models.Todo{})
 	// 配置路由
-	r := routes.SetupRouter()
+	r := routers.SetupRouter()
 	// 启动server
 	r.Run(":9000")
 }

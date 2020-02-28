@@ -11,5 +11,9 @@ var DB *gorm.DB
 func InitMySQL(dsn string) (err error) {
 	// Creating a connection to the database
 	DB, err = gorm.Open("mysql", dsn)
+	if err != nil {
+		return
+	}
+	err = DB.DB().Ping()
 	return err
 }
