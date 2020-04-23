@@ -14,14 +14,18 @@ git clone https://github.com/Q1mi/bubble.git
 ```sql
 CREATE DATABASE bubble DEFAULT CHARSET=utf8mb4;
 ```
-2. 在`bubble/config/config.ini`文件中按如下提示配置数据库连接信息。
+2. 在`bubble/conf/config.ini`文件中按如下提示配置数据库连接信息。
+
 ```ini
+port = 9000
+release = false
+
 [mysql]
-host=数据库ip
-port=你的数据库端口
-user=你的数据库用户名
-password=你的数据库密码
-dbname=bubble
+user = 你的数据库用户名
+password = 你的数据库密码
+host = 你的数据库host地址
+port = 你的数据库端口
+db = bubble
 ```
 
 ### 编译
@@ -33,11 +37,11 @@ go build
 
 Mac/Unix：
 ```bash
-./bubble
+./bubble conf/config.ini
 ```
 Windows:
 ```bash
-bubble.exe
+bubble.exe conf/config.ini
 ```
 
 启动之后，使用浏览器打开`http://127.0.0.1:9000/`即可。

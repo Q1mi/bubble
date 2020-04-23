@@ -1,33 +1,38 @@
 package main
 
 import (
-	"bubble/config"
-	"bubble/dblayer"
+	"bubble/dao"
 	"bubble/models"
 	"bubble/routers"
+	"bubble/setting"
 	"fmt"
-
-	"gopkg.in/ini.v1"
+	"os"
 )
 
 func main() {
-	var cfg = new(config.AppConfig)
-	err := ini.MapTo(cfg, "./config/config.ini")
-	if err != nil {
-		fmt.Printf("load config failed, err:%v\n", err)
+	if len(os.Args) < 2 {
+		fmt.Println("Usage：./bubble conf/config.ini")
 		return
 	}
-	dsn := config.GetDSN(&cfg.MySQLConfig)
-	err = dblayer.InitMySQL(dsn)
-	if err != nil {
-		fmt.Printf("init mysql connection failed, err:%v\n", err)
+	// 加载配置文件
+	if err := setting.Init(os.Args[1]); err != nil {
+		fmt.Printf("load config from file failed, err:%v\n", err)
 		return
 	}
-	defer dblayer.DB.Close()
-	// run the migrations: todo struct
-	dblayer.DB = dblayer.DB.AutoMigrate(&models.Todo{})
-	// 配置路由
+	// 创建数据库
+	// sql: CREATE DATABASE bubble;
+	// 连接数据库
+	err := dao.InitMySQL(setting.Conf.MySQLConfig)
+	if err != nil {
+		fmt.Printf("init mysql failed, err:%v\n", err)
+		return
+	}
+	defer dao.Close() // 程序退出关闭数据库连接
+	// 模型绑定
+	dao.DB.AutoMigrate(&models.Todo{})
+	// 注册路由
 	r := routers.SetupRouter()
-	// 启动server
-	r.Run(":9000")
+	if err := r.Run(fmt.Sprintf(":%d", setting.Conf.Port)); err != nil {
+		fmt.Printf("server startup failed, err:%v\n", err)
+	}
 }
