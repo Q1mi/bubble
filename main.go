@@ -6,16 +6,12 @@ import (
 	"bubble/routers"
 	"bubble/setting"
 	"fmt"
-	"os"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage：./bubble conf/config.ini")
-		return
-	}
+
 	// 加载配置文件
-	if err := setting.Init(os.Args[1]); err != nil {
+	if err := setting.Init("conf/config.ini"); err != nil {
 		fmt.Printf("load config from file failed, err:%v\n", err)
 		return
 	}
