@@ -3,9 +3,12 @@ package dao
 import (
 	"bubble/setting"
 	"fmt"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
+
+// 👉🏻 https://gorm.io/zh_CN/docs/
 
 var (
 	DB *gorm.DB

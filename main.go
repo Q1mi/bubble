@@ -9,13 +9,18 @@ import (
 	"os"
 )
 
+const defaultConfFile = "./conf/config.ini"
+
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage：./bubble conf/config.ini")
-		return
+	confFile := defaultConfFile
+	if len(os.Args) > 2 {
+		fmt.Println("use specified conf file: ", os.Args[1])
+		confFile = os.Args[1]
+	} else {
+		fmt.Println("no configuration file was specified, use ./conf/config.ini")
 	}
 	// 加载配置文件
-	if err := setting.Init(os.Args[1]); err != nil {
+	if err := setting.Init(confFile); err != nil {
 		fmt.Printf("load config from file failed, err:%v\n", err)
 		return
 	}
