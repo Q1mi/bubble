@@ -48,3 +48,10 @@ bubble.exe conf/config.ini
 
 启动之后，使用浏览器打开`http://127.0.0.1:9000/`即可。
 ![example.png](example.png)
+
+---
+### 运行逻辑
+```markdown
+ url     --> controller  --> logic   -->    model
+请求来了  -->  控制器      --> 业务逻辑  --> 模型层的增删改查
+```

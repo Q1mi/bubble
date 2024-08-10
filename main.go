@@ -1,15 +1,14 @@
 package main
 
 import (
-	"bubble/dao"
-	"bubble/models"
+	models "bubble/logic-dao"
 	"bubble/routers"
 	"bubble/setting"
 	"fmt"
 	"os"
 )
 
-const defaultConfFile = "./conf/config.ini"
+const defaultConfFile = "./config.ini"
 
 func main() {
 	confFile := defaultConfFile
@@ -17,7 +16,7 @@ func main() {
 		fmt.Println("use specified conf file: ", os.Args[1])
 		confFile = os.Args[1]
 	} else {
-		fmt.Println("no configuration file was specified, use ./conf/config.ini")
+		fmt.Println("no configuration file was specified, use ./config/config.ini")
 	}
 	// 加载配置文件
 	if err := setting.Init(confFile); err != nil {
@@ -27,14 +26,14 @@ func main() {
 	// 创建数据库
 	// sql: CREATE DATABASE bubble;
 	// 连接数据库
-	err := dao.InitMySQL(setting.Conf.MySQLConfig)
+	err := models.InitMySQL(setting.Conf.MySQLConfig)
 	if err != nil {
 		fmt.Printf("init mysql failed, err:%v\n", err)
 		return
 	}
-	defer dao.Close() // 程序退出关闭数据库连接
+	defer models.Close() // 程序退出关闭数据库连接
 	// 模型绑定
-	dao.DB.AutoMigrate(&models.Todo{})
+	models.DB.AutoMigrate(&models.Todo{})
 	// 注册路由
 	r := routers.SetupRouter()
 	if err := r.Run(fmt.Sprintf(":%d", setting.Conf.Port)); err != nil {

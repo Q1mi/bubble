@@ -13,4 +13,6 @@
 
 .idea
 *.DS_Store
+
 bubble
+config.ini

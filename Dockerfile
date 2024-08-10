@@ -29,10 +29,10 @@ COPY ./templates /templates
 COPY ./static /static
 
 # 从builder镜像中把配置文件拷贝到当前目录
-COPY ./conf /conf
+COPY ./config /config
 
-# 从builder镜像中把/dist/app 拷贝到当前目录
+# 从builder镜像中把编译后的二进制文件拷贝到当前目录
 COPY --from=builder /build/bubble /
 
 # 需要运行的命令
-ENTRYPOINT ["/bubble", "conf/config.ini"]
+ENTRYPOINT ["/bubble", "config/config.ini"]
