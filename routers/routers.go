@@ -3,6 +3,7 @@ package routers
 import (
 	"bubble/controller"
 	"bubble/setting"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +18,12 @@ func SetupRouter() *gin.Engine {
 	r.LoadHTMLGlob("templates/*")
 	r.GET("/", controller.IndexHandler)
 
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "ok",
+		})
+	})
+	
 	// v1
 	v1Group := r.Group("v1")
 	{
